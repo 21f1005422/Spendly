@@ -1,0 +1,237 @@
+/* ------------------------------------------------------------------ */
+/* Landing hero — overrides the .hero rules in style.css               */
+/* Loaded after style.css via the head block in landing.html           */
+/* ------------------------------------------------------------------ */
+
+/* base.html loads DM Sans at 300-600; the hero title needs 700 */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap');
+
+:root {
+    --hero-green: #35835c;
+    --hero-green-soft: #d9f0e3;
+    --hero-green-dot: #3d9c6d;
+    --hero-btn: #111111;
+    --hero-red: #c0392b;
+    --hero-track: #eceae4;
+    --hero-food: #e8a33d;
+    --hero-travel: #4a90d9;
+    --hero-bills: #7b68c8;
+}
+
+/* ---- Layout: centered single column, not the two-column grid ---- */
+
+.hero {
+    display: block;
+    grid-template-columns: none;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 4.5rem 2rem 5rem;
+    text-align: center;
+}
+
+.hero-inner {
+    max-width: 780px;
+    margin: 0 auto 3.5rem;
+}
+
+/* ---- Badge ---- */
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--hero-green-soft);
+    color: var(--hero-green);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 0.55rem 1.35rem;
+    border-radius: 999px;
+    margin-bottom: 2.25rem;
+}
+
+.hero-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--hero-green-dot);
+}
+
+/* ---- Title ---- */
+
+.hero-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5.4vw, 4rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 1.75rem;
+}
+
+.hero-title-accent {
+    color: var(--hero-green);
+}
+
+/* ---- Subtitle ---- */
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 620px;
+    margin: 0 auto 2.75rem;
+}
+
+/* ---- Buttons: both solid black ---- */
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    background: var(--hero-btn);
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.95rem 2rem;
+    border-radius: 10px;
+    transition: opacity 0.2s;
+}
+
+.hero-btn:hover { opacity: 0.85; }
+
+/* ------------------------------------------------------------------ */
+/* Preview window                                                      */
+/* ------------------------------------------------------------------ */
+
+.hero-preview {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.preview-dots {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem 1.25rem;
+}
+
+.preview-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot-red { background: #e8908f; }
+.dot-amber { background: #edc06a; }
+.dot-green { background: #8fd0b0; }
+
+/* ---- Stat tiles ---- */
+
+.preview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.preview-stat {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.35rem 1.5rem;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.4rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+}
+
+.stat-note {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--ink-faint);
+}
+
+.stat-note-up { color: var(--hero-red); }
+.stat-note-good { color: var(--hero-green); }
+
+/* ---- Category bars ---- */
+
+.preview-bars {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.preview-bar-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.preview-cat {
+    font-size: 1rem;
+    color: var(--ink-muted);
+    text-align: right;
+}
+
+.preview-track {
+    height: 10px;
+    background: var(--hero-track);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.preview-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+.fill-food { background: var(--hero-food); }
+.fill-travel { background: var(--hero-travel); }
+.fill-bills { background: var(--hero-bills); }
+
+/* ---- Responsive ---- */
+
+@media (max-width: 760px) {
+    .hero { padding: 3rem 1.25rem 3.5rem; }
+
+    .preview-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .preview-bar-row {
+        grid-template-columns: 70px 1fr;
+        gap: 0.85rem;
+    }
+
+    .hero-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
