@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Terms and Conditions — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="legal-section">
+    <div class="legal-container">
+
+        <header class="legal-header">
+            <h1 class="legal-title">Terms and Conditions</h1>
+            <p class="legal-updated">Last updated: 25 August 2026</p>
+        </header>
+
+        <div class="legal-card">
+
+            <h2 class="legal-heading">1. Acceptance of Terms</h2>
+            <p class="legal-body">
+                By creating a Spendly account or using any part of the service, you agree to be
+                bound by these Terms and Conditions. If you do not agree with them, please do not
+                use Spendly. You must be at least 13 years old to hold an account.
+            </p>
+
+            <h2 class="legal-heading">2. Use of Service</h2>
+            <p class="legal-body">
+                Spendly is a personal expense tracking tool provided for your own individual,
+                non-commercial use. You are responsible for the accuracy of the expense records
+                you enter and for keeping your account credentials confidential.
+            </p>
+            <p class="legal-body">You agree not to:</p>
+            <ul class="legal-list">
+                <li>Use the service for any unlawful purpose or in breach of any regulation.</li>
+                <li>Attempt to access another user's account or expense data.</li>
+                <li>Interfere with, disrupt, or place undue load on the service.</li>
+                <li>Reproduce or resell any part of Spendly without written permission.</li>
+            </ul>
+
+            <h2 class="legal-heading">3. User Data</h2>
+            <p class="legal-body">
+                The expenses, categories, and account details you enter remain yours. We store this
+                data solely to provide the service back to you — to display your spending summaries,
+                category breakdowns, and date-range reports.
+            </p>
+            <p class="legal-body">
+                We do not sell your financial data or share it with advertisers. You may delete your
+                expense records at any time from within the application. Our handling of personal
+                information is described further in our Privacy Policy.
+            </p>
+
+            <h2 class="legal-heading">4. Limitations of Liability</h2>
+            <p class="legal-body">
+                Spendly is provided "as is", without warranty of any kind. It is a record-keeping
+                tool and does not constitute financial, tax, accounting, or investment advice. You
+                should not rely on it as your sole financial record.
+            </p>
+            <p class="legal-body">
+                To the fullest extent permitted by law, Spendly and its maintainers are not liable
+                for any indirect or consequential loss, loss of data, or financial decisions made on
+                the basis of information shown in the application. You are responsible for keeping
+                your own backups of important records.
+            </p>
+
+            <h2 class="legal-heading">5. Changes to Terms</h2>
+            <p class="legal-body">
+                We may update these Terms from time to time as the service develops. When we do, we
+                will revise the "Last updated" date at the top of this page. Continuing to use
+                Spendly after a change takes effect means you accept the revised Terms.
+            </p>
+
+        </div>
+
+        <p class="legal-back">
+            <a href="{{ url_for('landing') }}">← Back to home</a>
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

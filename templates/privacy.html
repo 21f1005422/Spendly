@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="legal-section">
+    <div class="legal-container">
+
+        <header class="legal-header">
+            <h1 class="legal-title">Privacy Policy</h1>
+            <p class="legal-updated">Last updated: 25 August 2026</p>
+        </header>
+
+        <div class="legal-card">
+
+            <h2 class="legal-heading">1. Data We Collect</h2>
+            <p class="legal-body">
+                Spendly collects only what it needs to work as an expense tracker. This falls into
+                two categories:
+            </p>
+            <ul class="legal-list">
+                <li><strong>Account details</strong> — the username and email address you provide at
+                    registration, along with a securely hashed version of your password.</li>
+                <li><strong>Expense records</strong> — the amount, category, date, and description
+                    of each expense you choose to log.</li>
+            </ul>
+            <p class="legal-body">
+                We do not ask for and never store bank account numbers, card details, or credentials
+                for any financial institution. Spendly does not connect to your bank.
+            </p>
+
+            <h2 class="legal-heading">2. How We Use Your Data</h2>
+            <p class="legal-body">
+                Your data is used to provide the service back to you — nothing more. Specifically,
+                to authenticate you when you sign in, to display your expense list, and to generate
+                the category breakdowns, monthly summaries, and date-range reports you request.
+            </p>
+            <p class="legal-body">
+                We do not sell your data. We do not share it with advertisers, and we do not use
+                your expense records to build advertising profiles or train models.
+            </p>
+
+            <h2 class="legal-heading">3. Data Storage</h2>
+            <p class="legal-body">
+                Your account and expense records are stored in the application's database.
+                Passwords are never stored in plain text — they are hashed before being written,
+                so they cannot be read back by anyone, including us.
+            </p>
+            <p class="legal-body">
+                We retain your data for as long as your account is active. You may delete individual
+                expense records at any time from within the application, and deleting your account
+                removes the expense records associated with it.
+            </p>
+
+            <h2 class="legal-heading">4. Third Party Services</h2>
+            <p class="legal-body">
+                Spendly keeps external dependencies to a minimum. The only third party service used
+                by these pages is <strong>Google Fonts</strong>, which serves the typefaces used
+                across the site. When a page loads, your browser requests those font files
+                directly from Google, which may involve your IP address being visible to them.
+            </p>
+            <p class="legal-body">
+                We do not use analytics trackers, advertising pixels, or social media embeds. No
+                third party has access to your expense data.
+            </p>
+
+            <h2 class="legal-heading">5. Contact Us</h2>
+            <p class="legal-body">
+                If you have questions about this policy, want to know what data we hold about you,
+                or would like your account and records deleted, get in touch at
+                <strong>privacy@spendly.app</strong> and we will respond as soon as we can.
+            </p>
+            <p class="legal-body">
+                We may update this policy as the service develops. When we do, the "Last updated"
+                date above will change.
+            </p>
+
+        </div>
+
+        <p class="legal-back">
+            <a href="{{ url_for('landing') }}">← Back to home</a>
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}
