@@ -1,6 +1,8 @@
 import os
+import sqlite3
 
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, request, session, url_for
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from database import db
 
@@ -22,13 +24,60 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        username = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        # First failure wins, so the message names the first thing wrong.
+        if not username or not email or not password:
+            error = "All fields are required."
+        elif len(password) < 8:
+            error = "Password must be at least 8 characters."
+        else:
+            error = None
+
+        if error is None:
+            conn = db.get_db()
+            try:
+                conn.execute(
+                    "INSERT INTO users (username, email, password_hash)"
+                    " VALUES (?, ?, ?)",
+                    (username, email, generate_password_hash(password)),
+                )
+                conn.commit()
+            except sqlite3.IntegrityError:
+                # users.email is COLLATE NOCASE UNIQUE.
+                error = "An account with that email already exists."
+            else:
+                return redirect(url_for("login"))
+
+        return render_template("register.html", error=error)
+
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        user = db.get_db().execute(
+            "SELECT id, password_hash FROM users WHERE email = ?", (email,)
+        ).fetchone()
+
+        # One message for both failures, so it can't be used to probe which
+        # emails are registered.
+        if user is None or not check_password_hash(user["password_hash"], password):
+            return render_template("login.html", error="Invalid email or password.")
+
+        session.clear()
+        session["user_id"] = user["id"]
+        return redirect(url_for("profile"))
+
     return render_template("login.html")
 
 
@@ -48,7 +97,8 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
