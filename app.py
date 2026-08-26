@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, request, session, url_for
+from werkzeug.security import check_password_hash
 
 from database import db
 
@@ -27,8 +28,25 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+
+        user = db.get_db().execute(
+            "SELECT id, password_hash FROM users WHERE email = ?", (email,)
+        ).fetchone()
+
+        # One message for both failures, so it can't be used to probe which
+        # emails are registered.
+        if user is None or not check_password_hash(user["password_hash"], password):
+            return render_template("login.html", error="Invalid email or password.")
+
+        session.clear()
+        session["user_id"] = user["id"]
+        return redirect(url_for("profile"))
+
     return render_template("login.html")
 
 
@@ -48,7 +66,8 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
