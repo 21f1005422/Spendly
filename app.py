@@ -45,7 +45,9 @@ def login():
 
         session.clear()
         session["user_id"] = user["id"]
-        return redirect(url_for("profile"))
+        # Temporary: /profile is still a Step 4 placeholder, so land on the
+        # landing page instead. Point this back at "profile" in Step 4.
+        return redirect(url_for("landing"))
 
     return render_template("login.html")
 
