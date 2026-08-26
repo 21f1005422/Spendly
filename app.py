@@ -15,6 +15,70 @@ db.init_app(app)
 
 
 # ------------------------------------------------------------------ #
+# Step 4 fixtures — hardcoded, deleted in Step 5                      #
+# ------------------------------------------------------------------ #
+# The profile page is built against literals so the layout can be settled
+# before any query exists. Every key matches a column database/db.py returns,
+# so Step 5 swaps these for SELECTs without touching profile.html. The values
+# mirror the seed data in database/db.py, so the page looks the same once it
+# is wired up.
+
+PROFILE_USER = {
+    "username": "Yash Agarwal",
+    "email": "demo@spendly.app",
+    "initials": "YA",
+    "member_since": "August 2026",
+}
+
+PROFILE_STATS = {
+    "total_spent": 12624.50,
+    "transaction_count": 12,
+    "top_category": "Travel",
+}
+
+# Newest first, the order Step 5's ORDER BY date DESC will produce.
+PROFILE_TRANSACTIONS = [
+    {"id": 7,  "date": "2026-08-22", "category": "Travel", "amount": 180.00,  "description": "Auto to the station"},
+    {"id": 6,  "date": "2026-08-18", "category": "Other",  "amount": 560.75,  "description": "Birthday gift"},
+    {"id": 5,  "date": "2026-08-15", "category": "Bills",  "amount": 1299.00, "description": "Broadband renewal"},
+    {"id": 4,  "date": "2026-08-11", "category": "Food",   "amount": 240.00,  "description": "Lunch with the team"},
+    {"id": 3,  "date": "2026-08-07", "category": "Travel", "amount": 899.00,  "description": "Monthly metro pass"},
+    {"id": 2,  "date": "2026-08-04", "category": "Food",   "amount": 320.50,  "description": "Groceries - vegetables and milk"},
+    {"id": 1,  "date": "2026-08-02", "category": "Bills",  "amount": 1450.00, "description": "Electricity bill"},
+    {"id": 12, "date": "2026-07-26", "category": "Food",   "amount": 275.25,  "description": "Coffee and snacks"},
+    {"id": 11, "date": "2026-07-20", "category": "Other",  "amount": 450.00,  "description": "Stationery and printing"},
+    {"id": 10, "date": "2026-07-14", "category": "Travel", "amount": 3400.00, "description": "Weekend trip - train tickets"},
+    {"id": 9,  "date": "2026-07-09", "category": "Food",   "amount": 2100.00, "description": "Month's groceries"},
+    {"id": 8,  "date": "2026-07-03", "category": "Bills",  "amount": 1450.00, "description": "Electricity bill"},
+]
+
+# `pct` is the true share of total_spent, shown as the label. `pct_step` is
+# that value rounded to a 5% step, which selects the bar's width class — the
+# spec forbids inline styles, so widths have to be enumerable. The two differ
+# by up to 2.5%, and the steps sum to 105 rather than 100.
+PROFILE_BREAKDOWN = [
+    {"category": "Travel", "total": 4479.00, "pct": 35, "pct_step": 35},
+    {"category": "Bills",  "total": 4199.00, "pct": 33, "pct_step": 35},
+    {"category": "Food",   "total": 2935.75, "pct": 23, "pct_step": 25},
+    {"category": "Other",  "total": 1010.75, "pct": 8,  "pct_step": 10},
+]
+
+MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+
+@app.template_filter("day")
+def day(iso):
+    """'2026-08-22' -> '22 Aug'.
+
+    A filter rather than a context key, so it works unchanged on the ISO TEXT
+    dates real rows carry (database/db.py:37).
+    """
+    _, month, dom = iso.split("-")
+    return f"{int(dom)} {MONTHS[int(month) - 1]}"
+
+
+# ------------------------------------------------------------------ #
 # Routes                                                              #
 # ------------------------------------------------------------------ #
 
@@ -35,7 +99,8 @@ def login():
         password = request.form.get("password", "")
 
         user = db.get_db().execute(
-            "SELECT id, password_hash FROM users WHERE email = ?", (email,)
+            "SELECT id, username, password_hash FROM users WHERE email = ?",
+            (email,),
         ).fetchone()
 
         # One message for both failures, so it can't be used to probe which
@@ -45,11 +110,35 @@ def login():
 
         session.clear()
         session["user_id"] = user["id"]
-        # Temporary: /profile is still a Step 4 placeholder, so land on the
-        # landing page instead. Point this back at "profile" in Step 4.
-        return redirect(url_for("landing"))
+        # A copy of the name, so base.html's navbar can greet the user on every
+        # page without a query. A route that lets a user rename themselves has
+        # to rewrite this too, or the navbar goes stale.
+        session["username"] = user["username"]
+        return redirect(url_for("profile"))
 
     return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("landing"))
+
+
+@app.route("/profile")
+def profile():
+    if session.get("user_id") is None:
+        return redirect(url_for("login"))
+
+    # The session id is checked but not used: nothing is scoped to the user
+    # until Step 5 replaces these fixtures with queries.
+    return render_template(
+        "profile.html",
+        user=PROFILE_USER,
+        stats=PROFILE_STATS,
+        transactions=PROFILE_TRANSACTIONS,
+        breakdown=PROFILE_BREAKDOWN,
+    )
 
 
 @app.route("/terms")
@@ -65,17 +154,6 @@ def privacy():
 # ------------------------------------------------------------------ #
 # Placeholder routes — students will implement these                  #
 # ------------------------------------------------------------------ #
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("landing"))
-
-
-@app.route("/profile")
-def profile():
-    return "Profile page — coming in Step 4"
-
 
 @app.route("/expenses/add")
 def add_expense():

@@ -44,9 +44,7 @@ def test_valid_credentials_start_a_session(client, demo):
     )
 
     assert response.status_code == 302
-    # Temporary destination while /profile is a Step 4 placeholder. When Step 4
-    # lands, this becomes "/profile" again — see app.py.
-    assert response.headers["Location"] == "/"
+    assert response.headers["Location"] == "/profile"
 
     with client.session_transaction() as session:
         assert session["user_id"] == demo["id"]
