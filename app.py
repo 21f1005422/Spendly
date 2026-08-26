@@ -1,6 +1,16 @@
+import os
+
 from flask import Flask, render_template
 
+from database import db
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(__name__)
+app.config["DATABASE"] = os.path.join(BASE_DIR, "expense_tracker.db")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-only-change-me")
+
+db.init_app(app)
 
 
 # ------------------------------------------------------------------ #
