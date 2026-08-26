@@ -27,13 +27,20 @@ python app.py                     # dev server, debug=True, http://localhost:500
 
 Port is **5001**, not Flask's default 5000 (macOS AirPlay squats on 5000).
 
-`pytest` and `pytest-flask` are installed but **no tests exist yet**. Once a `tests/` directory exists:
+`pytest` and `pytest-flask` are installed. `tests/test_auth.py` covers Step 3
+(login, logout, the session); the other steps have no tests yet.
 
 ```bash
 pytest                            # all
-pytest tests/test_db.py           # one file
-pytest tests/test_db.py::test_init_db -v   # one test
+pytest tests/test_auth.py         # one file
+pytest tests/test_auth.py::test_logout_clears_the_session -v   # one test
 ```
+
+`tests/conftest.py` holds the shared fixtures. Because `app.py` builds its Flask
+object at import time — no app factory — the `app` fixture repoints
+`app.config["DATABASE"]` at a per-test `tmp_path` instead of constructing a new
+app, so the suite never touches the real `expense_tracker.db`. New test modules
+should take the `client` and `demo` fixtures rather than rolling their own.
 
 There is no linter or formatter configured.
 
