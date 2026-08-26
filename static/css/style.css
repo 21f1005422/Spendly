@@ -19,19 +19,6 @@
     --border: #e4e1da;
     --border-soft: #eeebe4;
 
-    /* Category palette. Mirrors the --hero-* values in landing.css, which are
-       scoped to that file and undefined on every other page. */
-    --cat-food: #e8a33d;
-    --cat-travel: #4a90d9;
-    --cat-bills: #7b68c8;
-    --cat-other: var(--ink-muted);
-    --cat-track: #eceae4;
-
-    --cat-food-light: #fbf1de;
-    --cat-travel-light: #e6effa;
-    --cat-bills-light: #edeaf8;
-    --cat-other-light: #eeece7;
-
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
 
